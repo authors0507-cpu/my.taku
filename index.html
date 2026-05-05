@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>パーソナルトレーニング | あなたの理想の体へ</title>
+  <meta name="description" content="20〜50代の男女歓迎。自宅トレーニングルームで完全マンツーマン指導。初心者から経験者まで、あなたの目標に合わせたパーソナルトレーニングを提供します。">
+  <!-- OGP（SNSシェア用） -->
+  <meta property="og:title" content="パーソナルトレーニング | あなたの理想の体へ">
+  <meta property="og:description" content="完全マンツーマン指導。20〜50代・男女歓迎。自宅トレーニングルームで初回カウンセリング無料。">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="ja_JP">
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="パーソナルトレーニング | あなたの理想の体へ">
+  <meta name="twitter:description" content="完全マンツーマン指導。20〜50代・男女歓迎。初回カウンセリング無料。">
+  <!-- 検索エンジン向け -->
+  <meta name="robots" content="index, follow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ナビゲーション -->
+  <nav class="nav" id="nav">
+    <div class="nav__inner">
+      <a href="#" class="nav__logo">PERSONAL TRAINING</a>
+      <button class="nav__hamburger" id="hamburger" aria-label="メニュー">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav__menu" id="navMenu">
+        <li><a href="#about">トレーナーについて</a></li>
+        <li><a href="#service">サービス</a></li>
+        <li><a href="#price">料金</a></li>
+        <li><a href="#voice">お客様の声</a></li>
+        <li><a href="#access">アクセス</a></li>
+        <li><a href="#contact" class="nav__cta">無料相談</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ヒーロー -->
+  <section class="hero" id="top">
+    <div class="hero__bg"></div>
+    <div class="hero__content">
+      <p class="hero__sub">完全マンツーマン指導</p>
+      <h1 class="hero__title">
+        あなたの<span class="hero__accent">理想の体</span>を<br>
+        一緒に作りましょう
+      </h1>
+      <p class="hero__desc">
+        20代〜50代・男女歓迎。<br>
+        初心者でも安心。あなたのペースで、確実に変わる。
+      </p>
+      <div class="hero__btns">
+        <a href="#contact" class="btn btn--primary">無料カウンセリングを申し込む</a>
+        <a href="#service" class="btn btn--outline">サービスを見る</a>
+      </div>
+    </div>
+    <div class="hero__scroll">
+      <span>SCROLL</span>
+      <div class="hero__scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- 実績数字 -->
+  <section class="stats">
+    <div class="container">
+      <div class="stats__grid">
+        <div class="stat">
+          <div class="stat__num"><span class="stat__count" data-target="120">0</span><span class="stat__plus">+</span></div>
+          <p class="stat__label">累計セッション数</p>
+        </div>
+        <div class="stat">
+          <div class="stat__num"><span class="stat__count" data-target="98">0</span><span class="stat__unit">%</span></div>
+          <p class="stat__label">お客様満足度</p>
+        </div>
+        <div class="stat">
+          <div class="stat__num"><span class="stat__count" data-target="3">0</span><span class="stat__unit">ヶ月</span></div>
+          <p class="stat__label">平均的な変化が出る期間</p>
+        </div>
+        <div class="stat">
+          <div class="stat__num">¥<span class="stat__count" data-target="0">0</span></div>
+          <p class="stat__label">初回カウンセリング料金</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 特徴 -->
+  <section class="features">
+    <div class="container">
+      <div class="features__grid">
+        <div class="feature">
+          <div class="feature__icon">01</div>
+          <h3 class="feature__title">完全個室・プライベート空間</h3>
+          <p class="feature__text">自宅トレーニングルームを使用。他の目を気にせず、集中してトレーニングできます。</p>
+        </div>
+        <div class="feature">
+          <div class="feature__icon">02</div>
+          <h3 class="feature__title">完全マンツーマン指導</h3>
+          <p class="feature__text">あなただけのプログラムを作成。目標・体力・ライフスタイルに合わせた完全オーダーメイドです。</p>
+        </div>
+        <div class="feature">
+          <div class="feature__icon">03</div>
+          <h3 class="feature__title">初心者・女性も大歓迎</h3>
+          <p class="feature__text">運動が苦手な方、久しぶりに体を動かす方も安心。基礎から丁寧にサポートします。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- トレーナー紹介 -->
+  <section class="about section" id="about">
+    <div class="container">
+      <div class="section__header">
+        <p class="section__label">TRAINER</p>
+        <h2 class="section__title">トレーナー紹介</h2>
+      </div>
+      <div class="about__inner">
+        <div class="about__image">
+          <!-- トレーナーの写真をここに設置してください -->
+          <div class="about__photo-placeholder">
+            <span>トレーナーの<br>写真をここに</span>
+          </div>
+        </div>
+        <div class="about__body">
+          <p class="about__name">太田 拓実<span class="about__name-kana">（おおた たくみ）</span></p>
+          <div class="about__tags">
+            <span class="tag">資格: ○○認定パーソナルトレーナー</span>
+            <span class="tag">経験: ○年</span>
+          </div>
+          <p class="about__text">
+            はじめまして。パーソナルトレーナーの太田 拓実です。<br><br>
+            私自身、○○をきっかけにトレーニングを始め、体と心の変化を実感しました。
+            その経験を活かして、お客様一人ひとりに寄り添ったトレーニングを提供しています。<br><br>
+            「ジムに通うのが怖い」「何から始めればいいかわからない」そんな方こそ、
+            ぜひ一度ご相談ください。完全プライベートな空間で、焦らず一緒に目標を目指しましょう。
+          </p>
+          <div class="about__career">
+            <h4>経歴・資格</h4>
+            <ul>
+              <li>○○ パーソナルトレーナー資格取得</li>
+              <li>○○ 栄養士資格取得（任意）</li>
+              <li>トレーニング歴 ○年</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- サービス -->
+  <section class="service section section--dark" id="service">
+    <div class="container">
+      <div class="section__header">
+        <p class="section__label">SERVICE</p>
+        <h2 class="section__title">サービス内容</h2>
+      </div>
+      <div class="service__grid">
+        <div class="service__card">
+          <div class="service__icon">💪</div>
+          <h3 class="service__title">ボディメイク・筋力アップ</h3>
+          <p class="service__text">筋肉をつけて引き締まった体へ。フォームの基礎から丁寧に指導。重量・回数も一緒に管理します。</p>
+        </div>
+        <div class="service__card">
+          <div class="service__icon">🔥</div>
+          <h3 class="service__title">ダイエット・脂肪燃焼</h3>
+          <p class="service__text">リバウンドしないダイエットを目指します。食事アドバイスも含めてトータルサポート。</p>
+        </div>
+        <div class="service__card">
+          <div class="service__icon">🧘</div>
+          <h3 class="service__title">姿勢改善・腰痛予防</h3>
+          <p class="service__text">デスクワークで崩れた姿勢・体の歪みを改善。日常生活の質を高めるトレーニングを行います。</p>
+        </div>
+        <div class="service__card">
+          <div class="service__icon">🏃</div>
+          <h3 class="service__title">健康維持・体力づくり</h3>
+          <p class="service__text">年齢問わず、長く健康でいるための体づくり。50代の方も多数実績あり。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 料金 -->
+  <section class="price section" id="price">
+    <div class="container">
+      <div class="section__header">
+        <p class="section__label">PRICE</p>
+        <h2 class="section__title">料金プラン</h2>
+        <p class="section__desc">※ 初回カウンセリングは無料です</p>
+      </div>
+      <div class="price__grid">
+        <div class="price__card">
+          <div class="price__label">体験</div>
+          <h3 class="price__name">体験セッション</h3>
+          <div class="price__amount">
+            <span class="price__currency">¥</span>
+            <span class="price__num">3,000</span>
+            <span class="price__unit">/ 60分</span>
+          </div>
+          <ul class="price__list">
+            <li>カウンセリング（目標確認）</li>
+            <li>体組成測定</li>
+            <li>体験トレーニング</li>
+            <li>今後のプランご提案</li>
+          </ul>
+          <a href="#contact" class="btn btn--outline-dark">申し込む</a>
+        </div>
+        <div class="price__card price__card--featured">
+          <div class="price__badge">人気No.1</div>
+          <div class="price__label">月謝制</div>
+          <h3 class="price__name">月4回プラン</h3>
+          <div class="price__amount">
+            <span class="price__currency">¥</span>
+            <span class="price__num">20,000</span>
+            <span class="price__unit">/ 月</span>
+          </div>
+          <ul class="price__list">
+            <li>月4回（週1回）60分セッション</li>
+            <li>オリジナルプログラム作成</li>
+            <li>食事アドバイス</li>
+            <li>LINEサポート（無制限）</li>
+          </ul>
+          <a href="#contact" class="btn btn--primary">申し込む</a>
+        </div>
+        <div class="price__card">
+          <div class="price__label">月謝制</div>
+          <h3 class="price__name">月8回プラン</h3>
+          <div class="price__amount">
+            <span class="price__currency">¥</span>
+            <span class="price__num">36,000</span>
+            <span class="price__unit">/ 月</span>
+          </div>
+          <ul class="price__list">
+            <li>月8回（週2回）60分セッション</li>
+            <li>オリジナルプログラム作成</li>
+            <li>食事管理サポート</li>
+            <li>LINEサポート（無制限）</li>
+          </ul>
+          <a href="#contact" class="btn btn--outline-dark">申し込む</a>
+        </div>
+      </div>
+      <p class="price__note">※ 料金はすべて税込。単発（都度払い）もご相談ください。</p>
+    </div>
+  </section>
+
+  <!-- お客様の声 -->
+  <section class="voice section" id="voice">
+    <div class="container">
+      <div class="section__header">
+        <p class="section__label">VOICE</p>
+        <h2 class="section__title">お客様の声</h2>
+        <p class="section__desc">実際にトレーニングを受けたお客様からの声をご紹介します。</p>
+      </div>
+      <div class="voice__grid">
+        <div class="voice__card">
+          <div class="voice__stars">★★★★★</div>
+          <p class="voice__text">
+            「産後で体型が崩れてしまい悩んでいましたが、3ヶ月で体重-5kgを達成！先生が優しく丁寧に教えてくださるので、運動が苦手な私でも続けられています。」
+          </p>
+          <div class="voice__profile">
+            <div class="voice__avatar">A</div>
+            <div>
+              <p class="voice__name">Aさん（30代・女性）</p>
+              <p class="voice__goal">目標：産後ダイエット</p>
+            </div>
+          </div>
+        </div>
+        <div class="voice__card">
+          <div class="voice__stars">★★★★★</div>
+          <p class="voice__text">
+            「デスクワークで腰痛がひどく、整体にも通っていましたが根本的に改善されませんでした。パーソナルトレーニングで体幹を鍛えてから、腰痛がほとんど出なくなりました！」
+          </p>
+          <div class="voice__profile">
+            <div class="voice__avatar">B</div>
+            <div>
+              <p class="voice__name">Bさん（40代・男性）</p>
+              <p class="voice__goal">目標：腰痛改善・姿勢改善</p>
+            </div>
+          </div>
+        </div>
+        <div class="voice__card">
+          <div class="voice__stars">★★★★★</div>
+          <p class="voice__text">
+            「50代で体力の衰えを感じて始めました。完全個室なので周りの目を気にせず運動できるのが最高です。今では週2回が楽しみになっています！」
+          </p>
+          <div class="voice__profile">
+            <div class="voice__avatar">C</div>
+            <div>
+              <p class="voice__name">Cさん（50代・女性）</p>
+              <p class="voice__goal">目標：健康維持・体力づくり</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="voice__note">※ お客様の同意を得て掲載しています。効果には個人差があります。</p>
+    </div>
+  </section>
+
+  <!-- よくある質問 -->
+  <section class="faq section section--gray" id="faq">
+    <div class="container">
+      <div class="section__header">
+        <p class="section__label">FAQ</p>
+        <h2 class="section__title">よくある質問</h2>
+      </div>
+      <div class="faq__list">
+        <div class="faq__item">
+          <button class="faq__question" aria-expanded="false">
+            運動が全くの初心者でも大丈夫ですか？
+            <span class="faq__icon">+</span>
+          </button>
+          <div class="faq__answer">
+            <p>もちろん大丈夫です。初心者の方こそ大歓迎です。体の使い方や正しいフォームから丁寧にお教えします。焦らず、あなたのペースで進めていきましょう。</p>
+          </div>
+        </div>
+        <div class="faq__item">
+          <button class="faq__question" aria-expanded="false">
+            女性一人でも安心して通えますか？
+            <span class="faq__icon">+</span>
+          </button>
+          <div class="faq__answer">
+            <p>はい。完全個室・プライベートな空間でのセッションですので、安心してご参加いただけます。女性のお客様も多くいらっしゃいます。</p>
+          </div>
+        </div>
+        <div class="faq__item">
+          <button class="faq__question" aria-expanded="false">
+            駐車場・駐輪場はありますか？
+            <span class="faq__icon">+</span>
+          </button>
+          <div class="faq__answer">
+            <p>【駐車場・駐輪場について記載してください。例：駐車場1台あり／近くにコインパーキングあり など】</p>
+          </div>
+        </div>
+        <div class="faq__item">
+          <button class="faq__question" aria-expanded="false">
+            持ち物は何が必要ですか？
+            <span class="faq__icon">+</span>
+          </button>
+          <div class="faq__answer">
+            <p>動きやすい服装とタオル、飲み物をご持参ください。シューズはトレーニングルーム内にてお履き替えいただきます（室内用シューズをお持ちの方はご持参ください）。</p>
+          </div>
+        </div>
+        <div class="faq__item">
+          <button class="faq__question" aria-expanded="false">
+            キャンセルはできますか？
+            <span class="faq__icon">+</span>
+          </button>
+          <div class="faq__answer">
+            <p>前日までのご連絡はキャンセル料なしで対応可能です。当日キャンセルの場合はセッション料金の50%をいただく場合がございます。詳細はお問い合わせください。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- アクセス -->
+  <section class="access section" id="access">
+    <div class="container">
+      <div class="section__header">
+        <p class="section__label">ACCESS</p>
+        <h2 class="section__title">アクセス</h2>
+      </div>
+      <div class="access__inner">
+        <div class="access__info">
+          <table class="access__table">
+            <tr>
+              <th>場所</th>
+              <td>自宅トレーニングルーム（完全個室）</td>
+            </tr>
+            <tr>
+              <th>住所</th>
+              <td>
+                〒658-0054 兵庫県神戸市東灘区本山北町5-5-3<br>
+                <small>※ お申し込み後に詳細をご案内します</small>
+              </td>
+            </tr>
+            <tr>
+              <th>最寄り駅</th>
+              <td>【最寄り駅名】駅 徒歩○分</td>
+            </tr>
+            <tr>
+              <th>駐車場</th>
+              <td>【駐車場情報を記載してください】</td>
+            </tr>
+            <tr>
+              <th>営業時間</th>
+              <td>
+                平日 ○:00〜○:00<br>
+                土日 ○:00〜○:00<br>
+                <small>※ 祝日・不定休あり</small>
+              </td>
+            </tr>
+          </table>
+          <a
+            href="https://maps.google.com/?q=兵庫県神戸市東灘区本山北町5-5-3"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn btn--map"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5S13.38 11.5 12 11.5z"/>
+            </svg>
+            Googleマップで見る
+          </a>
+        </div>
+        <div class="access__map">
+          <!-- Googleマップ埋め込み -->
+          <!-- 以下の iframe の src を実際のGoogleマップ埋め込みURLに差し替えてください -->
+          <!-- Googleマップ → 共有 → マップを埋め込む → URLをコピー -->
+          <div class="access__map-placeholder">
+            <p>Googleマップをここに埋め込んでください</p>
+            <p class="access__map-hint">
+              Googleマップ → 対象の場所を検索 →<br>
+              「共有」→「マップを埋め込む」→<br>
+              HTMLをコピーして貼り付け
+            </p>
+            <!-- 埋め込みサンプル（差し替えてください）:
+            <iframe
+              src="https://www.google.com/maps/embed?pb=..."
+              width="100%"
+              height="400"
+              style="border:0;"
+              allowfullscreen=""
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
+            -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- お問い合わせ -->
+  <section class="contact section section--dark" id="contact">
+    <div class="container">
+      <div class="section__header">
+        <p class="section__label">CONTACT</p>
+        <h2 class="section__title">無料カウンセリング・お問い合わせ</h2>
+        <p class="section__desc">まずはお気軽にご相談ください。LINEでもメールでも受け付けています。</p>
+      </div>
+      <div class="contact__inner">
+        <!-- LINE連携ボタン -->
+        <div class="contact__line">
+          <a href="https://line.me/ti/p/~florida0507" target="_blank" rel="noopener noreferrer" class="btn btn--line">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2C6.48 2 2 5.86 2 10.6c0 3.1 1.9 5.83 4.77 7.48L6 21l3.29-1.72c.86.24 1.77.37 2.71.37 5.52 0 10-3.86 10-8.6C22 5.86 17.52 2 12 2zm1.08 11.59l-2.7-2.89-5.27 2.89 5.8-6.16 2.76 2.89 5.21-2.89-5.8 6.16z"/>
+            </svg>
+            LINEで相談する（無料・最短即日返信）
+          </a>
+          <p class="contact__line-note">LINEをお持ちでない方はフォームからどうぞ</p>
+        </div>
+
+        <div class="contact__or"><span>または</span></div>
+
+        <!-- お問い合わせフォーム -->
+        <form class="contact__form" id="contactForm" action="#" method="POST">
+          <div class="form__row">
+            <div class="form__group">
+              <label for="name">お名前 <span class="required">必須</span></label>
+              <input type="text" id="name" name="name" placeholder="山田 太郎" required>
+            </div>
+            <div class="form__group">
+              <label for="age">年齢</label>
+              <select id="age" name="age">
+                <option value="">選択してください</option>
+                <option value="20s">20代</option>
+                <option value="30s">30代</option>
+                <option value="40s">40代</option>
+                <option value="50s">50代</option>
+                <option value="other">その他</option>
+              </select>
+            </div>
+          </div>
+          <div class="form__row">
+            <div class="form__group">
+              <label for="email">メールアドレス <span class="required">必須</span></label>
+              <input type="email" id="email" name="email" placeholder="example@email.com" required>
+            </div>
+            <div class="form__group">
+              <label for="phone">電話番号</label>
+              <input type="tel" id="phone" name="phone" placeholder="090-0000-0000">
+            </div>
+          </div>
+          <div class="form__group">
+            <label for="goal">トレーニングの目的</label>
+            <select id="goal" name="goal">
+              <option value="">選択してください</option>
+              <option value="diet">ダイエット・体重を減らしたい</option>
+              <option value="muscle">筋肉をつけたい・引き締めたい</option>
+              <option value="posture">姿勢改善・腰痛を改善したい</option>
+              <option value="health">健康維持・体力をつけたい</option>
+              <option value="other">その他</option>
+            </select>
+          </div>
+          <div class="form__group">
+            <label for="message">メッセージ・ご質問 <span class="required">必須</span></label>
+            <textarea id="message" name="message" rows="5" placeholder="ご質問・ご要望などお気軽にどうぞ" required></textarea>
+          </div>
+          <div class="form__submit">
+            <button type="submit" class="btn btn--primary btn--large">送信する</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- フッター -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__inner">
+        <p class="footer__logo">PERSONAL TRAINING</p>
+        <nav class="footer__nav">
+          <a href="#about">トレーナーについて</a>
+          <a href="#service">サービス</a>
+          <a href="#price">料金</a>
+          <a href="#voice">お客様の声</a>
+          <a href="#access">アクセス</a>
+          <a href="#contact">お問い合わせ</a>
+        </nav>
+        <p class="footer__copy">&copy; 2025 Personal Training. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- トップへ戻るボタン -->
+  <a href="#top" class="back-to-top" id="backToTop" aria-label="トップへ戻る">↑</a>
+
+  <!-- フローティングLINEボタン（スマホ用） -->
+  <a href="https://line.me/ti/p/~florida0507" target="_blank" rel="noopener noreferrer" class="float-line" id="floatLine" aria-label="LINEで相談">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M12 2C6.48 2 2 5.86 2 10.6c0 3.1 1.9 5.83 4.77 7.48L6 21l3.29-1.72c.86.24 1.77.37 2.71.37 5.52 0 10-3.86 10-8.6C22 5.86 17.52 2 12 2zm1.08 11.59l-2.7-2.89-5.27 2.89 5.8-6.16 2.76 2.89 5.21-2.89-5.8 6.16z"/>
+    </svg>
+    <span>LINE相談</span>
+  </a>
+
+  <script src="script.js"></script>
+</body>
+</html>
