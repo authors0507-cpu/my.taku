@@ -5,6 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>パーソナルトレーニング | あなたの理想の体へ</title>
   <meta name="description" content="20〜50代の男女歓迎。自宅トレーニングルームで完全マンツーマン指導。初心者から経験者まで、あなたの目標に合わせたパーソナルトレーニングを提供します。">
+  <!-- OGP（SNSシェア用） -->
+  <meta property="og:title" content="パーソナルトレーニング | あなたの理想の体へ">
+  <meta property="og:description" content="完全マンツーマン指導。20〜50代・男女歓迎。自宅トレーニングルームで初回カウンセリング無料。">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="ja_JP">
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="パーソナルトレーニング | あなたの理想の体へ">
+  <meta name="twitter:description" content="完全マンツーマン指導。20〜50代・男女歓迎。初回カウンセリング無料。">
+  <!-- 検索エンジン向け -->
+  <meta name="robots" content="index, follow">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
@@ -22,6 +33,7 @@
         <li><a href="#about">トレーナーについて</a></li>
         <li><a href="#service">サービス</a></li>
         <li><a href="#price">料金</a></li>
+        <li><a href="#voice">お客様の声</a></li>
         <li><a href="#access">アクセス</a></li>
         <li><a href="#contact" class="nav__cta">無料相談</a></li>
       </ul>
@@ -49,6 +61,30 @@
     <div class="hero__scroll">
       <span>SCROLL</span>
       <div class="hero__scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- 実績数字 -->
+  <section class="stats">
+    <div class="container">
+      <div class="stats__grid">
+        <div class="stat">
+          <div class="stat__num"><span class="stat__count" data-target="120">0</span><span class="stat__plus">+</span></div>
+          <p class="stat__label">累計セッション数</p>
+        </div>
+        <div class="stat">
+          <div class="stat__num"><span class="stat__count" data-target="98">0</span><span class="stat__unit">%</span></div>
+          <p class="stat__label">お客様満足度</p>
+        </div>
+        <div class="stat">
+          <div class="stat__num"><span class="stat__count" data-target="3">0</span><span class="stat__unit">ヶ月</span></div>
+          <p class="stat__label">平均的な変化が出る期間</p>
+        </div>
+        <div class="stat">
+          <div class="stat__num">¥<span class="stat__count" data-target="0">0</span></div>
+          <p class="stat__label">初回カウンセリング料金</p>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -210,6 +246,59 @@
     </div>
   </section>
 
+  <!-- お客様の声 -->
+  <section class="voice section" id="voice">
+    <div class="container">
+      <div class="section__header">
+        <p class="section__label">VOICE</p>
+        <h2 class="section__title">お客様の声</h2>
+        <p class="section__desc">実際にトレーニングを受けたお客様からの声をご紹介します。</p>
+      </div>
+      <div class="voice__grid">
+        <div class="voice__card">
+          <div class="voice__stars">★★★★★</div>
+          <p class="voice__text">
+            「産後で体型が崩れてしまい悩んでいましたが、3ヶ月で体重-5kgを達成！先生が優しく丁寧に教えてくださるので、運動が苦手な私でも続けられています。」
+          </p>
+          <div class="voice__profile">
+            <div class="voice__avatar">A</div>
+            <div>
+              <p class="voice__name">Aさん（30代・女性）</p>
+              <p class="voice__goal">目標：産後ダイエット</p>
+            </div>
+          </div>
+        </div>
+        <div class="voice__card">
+          <div class="voice__stars">★★★★★</div>
+          <p class="voice__text">
+            「デスクワークで腰痛がひどく、整体にも通っていましたが根本的に改善されませんでした。パーソナルトレーニングで体幹を鍛えてから、腰痛がほとんど出なくなりました！」
+          </p>
+          <div class="voice__profile">
+            <div class="voice__avatar">B</div>
+            <div>
+              <p class="voice__name">Bさん（40代・男性）</p>
+              <p class="voice__goal">目標：腰痛改善・姿勢改善</p>
+            </div>
+          </div>
+        </div>
+        <div class="voice__card">
+          <div class="voice__stars">★★★★★</div>
+          <p class="voice__text">
+            「50代で体力の衰えを感じて始めました。完全個室なので周りの目を気にせず運動できるのが最高です。今では週2回が楽しみになっています！」
+          </p>
+          <div class="voice__profile">
+            <div class="voice__avatar">C</div>
+            <div>
+              <p class="voice__name">Cさん（50代・女性）</p>
+              <p class="voice__goal">目標：健康維持・体力づくり</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="voice__note">※ お客様の同意を得て掲載しています。効果には個人差があります。</p>
+    </div>
+  </section>
+
   <!-- よくある質問 -->
   <section class="faq section section--gray" id="faq">
     <div class="container">
@@ -354,15 +443,18 @@
         <p class="section__desc">まずはお気軽にご相談ください。LINEでもメールでも受け付けています。</p>
       </div>
       <div class="contact__inner">
-        <!-- LINE連携ボタン（LINEアカウントがある場合） -->
+        <!-- LINE連携ボタン -->
         <div class="contact__line">
           <a href="https://line.me/ti/p/【LINE IDをここに】" target="_blank" rel="noopener noreferrer" class="btn btn--line">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
               <path d="M12 2C6.48 2 2 5.86 2 10.6c0 3.1 1.9 5.83 4.77 7.48L6 21l3.29-1.72c.86.24 1.77.37 2.71.37 5.52 0 10-3.86 10-8.6C22 5.86 17.52 2 12 2zm1.08 11.59l-2.7-2.89-5.27 2.89 5.8-6.16 2.76 2.89 5.21-2.89-5.8 6.16z"/>
             </svg>
-            LINEで相談する（無料）
+            LINEで相談する（無料・最短即日返信）
           </a>
+          <p class="contact__line-note">LINEをお持ちでない方はフォームからどうぞ</p>
         </div>
+
+        <div class="contact__or"><span>または</span></div>
 
         <!-- お問い合わせフォーム -->
         <form class="contact__form" id="contactForm" action="#" method="POST">
@@ -425,6 +517,7 @@
           <a href="#about">トレーナーについて</a>
           <a href="#service">サービス</a>
           <a href="#price">料金</a>
+          <a href="#voice">お客様の声</a>
           <a href="#access">アクセス</a>
           <a href="#contact">お問い合わせ</a>
         </nav>
@@ -435,6 +528,14 @@
 
   <!-- トップへ戻るボタン -->
   <a href="#top" class="back-to-top" id="backToTop" aria-label="トップへ戻る">↑</a>
+
+  <!-- フローティングLINEボタン（スマホ用） -->
+  <a href="https://line.me/ti/p/【LINE IDをここに】" target="_blank" rel="noopener noreferrer" class="float-line" id="floatLine" aria-label="LINEで相談">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M12 2C6.48 2 2 5.86 2 10.6c0 3.1 1.9 5.83 4.77 7.48L6 21l3.29-1.72c.86.24 1.77.37 2.71.37 5.52 0 10-3.86 10-8.6C22 5.86 17.52 2 12 2zm1.08 11.59l-2.7-2.89-5.27 2.89 5.8-6.16 2.76 2.89 5.21-2.89-5.8 6.16z"/>
+    </svg>
+    <span>LINE相談</span>
+  </a>
 
   <script src="script.js"></script>
 </body>

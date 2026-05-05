@@ -780,7 +780,31 @@ button { border: none; background: none; cursor: pointer; font-family: var(--fon
 
 .contact__line {
   text-align: center;
-  margin-bottom: 48px;
+  margin-bottom: 24px;
+}
+
+.contact__line-note {
+  margin-top: 12px;
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.4);
+}
+
+.contact__or {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 32px;
+  color: rgba(255,255,255,0.3);
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+}
+
+.contact__or::before,
+.contact__or::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(255,255,255,0.1);
 }
 
 .contact__form {
@@ -847,6 +871,149 @@ button { border: none; background: none; cursor: pointer; font-family: var(--fon
 .form__submit {
   text-align: center;
   margin-top: 8px;
+}
+
+/* =============================
+   実績数字
+============================= */
+.stats {
+  background: var(--primary);
+  padding: 56px 0;
+}
+
+.stats__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 32px;
+  text-align: center;
+}
+
+.stat__num {
+  font-size: clamp(2.2rem, 4vw, 3rem);
+  font-weight: 900;
+  color: var(--white);
+  line-height: 1;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 2px;
+}
+
+.stat__plus, .stat__unit {
+  font-size: 1.2rem;
+  padding-bottom: 4px;
+  color: rgba(255,255,255,0.8);
+}
+
+.stat__label {
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.75);
+  font-weight: 500;
+}
+
+/* =============================
+   お客様の声
+============================= */
+.voice__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.voice__card {
+  background: var(--white);
+  border-radius: var(--radius);
+  padding: 32px;
+  box-shadow: var(--shadow);
+  transition: box-shadow var(--transition), transform var(--transition);
+}
+
+.voice__card:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-4px);
+}
+
+.voice__stars {
+  color: #f5a623;
+  font-size: 1rem;
+  letter-spacing: 2px;
+  margin-bottom: 16px;
+}
+
+.voice__text {
+  font-size: 0.9rem;
+  line-height: 1.85;
+  color: var(--text);
+  margin-bottom: 24px;
+}
+
+.voice__profile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-top: 1px solid var(--gray-2);
+  padding-top: 16px;
+}
+
+.voice__avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: var(--white);
+  font-weight: 700;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.voice__name {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.voice__goal {
+  font-size: 0.78rem;
+  color: var(--text-light);
+  margin-top: 2px;
+}
+
+.voice__note {
+  text-align: center;
+  font-size: 0.78rem;
+  color: var(--text-light);
+}
+
+/* =============================
+   フローティングLINEボタン
+============================= */
+.float-line {
+  position: fixed;
+  bottom: 32px;
+  left: 32px;
+  background: var(--line-green);
+  color: var(--white);
+  border-radius: 100px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  box-shadow: 0 4px 20px rgba(6,199,85,0.4);
+  z-index: 90;
+  transition: all var(--transition);
+}
+
+.float-line:hover {
+  background: #05b24c;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(6,199,85,0.5);
 }
 
 /* =============================
@@ -942,6 +1109,8 @@ button { border: none; background: none; cursor: pointer; font-family: var(--fon
   .access__inner { grid-template-columns: 1fr; gap: 32px; }
   .form__row { grid-template-columns: 1fr; }
   .contact__form { padding: 32px 24px; }
+  .stats__grid { grid-template-columns: repeat(2, 1fr); gap: 24px; }
+  .voice__grid { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 768px) {
@@ -986,5 +1155,8 @@ button { border: none; background: none; cursor: pointer; font-family: var(--fon
   .hero__btns .btn { width: 100%; max-width: 320px; }
 
   .footer__nav { gap: 16px; }
-  .back-to-top { bottom: 20px; right: 20px; }
+  .back-to-top { bottom: 80px; right: 16px; width: 40px; height: 40px; font-size: 0.95rem; }
+  .float-line { bottom: 16px; left: 16px; padding: 10px 16px; font-size: 0.8rem; }
+  .stats__grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+  .voice__grid { grid-template-columns: 1fr; }
 }
