@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>筋トレ目標管理</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+  <header>
+    <h1>💪 筋トレ目標管理</h1>
+    <nav>
+      <button class="nav-btn active" data-tab="goals">目標管理</button>
+      <button class="nav-btn" data-tab="records">トレーニング記録</button>
+      <button class="nav-btn" data-tab="progress">進捗グラフ</button>
+      <button class="nav-btn" data-tab="reminder">リマインダー</button>
+    </nav>
+  </header>
+
+  <main>
+    <!-- 目標管理タブ -->
+    <section id="tab-goals" class="tab active">
+      <div class="section-header">
+        <h2>目標一覧</h2>
+        <button class="btn-primary" id="open-goal-modal">+ 目標を追加</button>
+      </div>
+      <div id="goals-list" class="card-grid"></div>
+      <p class="empty-msg" id="goals-empty">目標がまだありません。追加してみましょう！</p>
+    </section>
+
+    <!-- トレーニング記録タブ -->
+    <section id="tab-records" class="tab">
+      <div class="section-header">
+        <h2>トレーニング記録</h2>
+        <button class="btn-primary" id="open-record-modal">+ 記録を追加</button>
+      </div>
+      <div class="filter-bar">
+        <label>種目でフィルター:
+          <select id="record-filter-exercise">
+            <option value="">すべて</option>
+          </select>
+        </label>
+        <label>日付:
+          <input type="date" id="record-filter-date" />
+        </label>
+        <button class="btn-secondary" id="clear-filter">クリア</button>
+      </div>
+      <div id="records-list" class="record-table-wrapper">
+        <table id="records-table">
+          <thead>
+            <tr>
+              <th>日付</th>
+              <th>種目</th>
+              <th>重量 (kg)</th>
+              <th>回数</th>
+              <th>セット数</th>
+              <th>メモ</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="records-tbody"></tbody>
+        </table>
+      </div>
+      <p class="empty-msg" id="records-empty">記録がまだありません。</p>
+    </section>
+
+    <!-- 進捗グラフタブ -->
+    <section id="tab-progress" class="tab">
+      <div class="section-header">
+        <h2>進捗グラフ</h2>
+      </div>
+      <div class="chart-controls">
+        <label>種目:
+          <select id="chart-exercise-select">
+            <option value="">選択してください</option>
+          </select>
+        </label>
+        <label>指標:
+          <select id="chart-metric-select">
+            <option value="weight">重量 (kg)</option>
+            <option value="reps">回数</option>
+            <option value="volume">ボリューム (kg×回×セット)</option>
+          </select>
+        </label>
+      </div>
+      <div class="chart-container">
+        <canvas id="progress-chart"></canvas>
+        <p class="empty-msg" id="chart-empty">種目を選択するとグラフが表示されます。</p>
+      </div>
+      <div id="achievement-cards" class="achievement-grid"></div>
+    </section>
+
+    <!-- リマインダータブ -->
+    <section id="tab-reminder" class="tab">
+      <div class="section-header">
+        <h2>リマインダー設定</h2>
+      </div>
+      <div class="card reminder-card">
+        <div class="form-group">
+          <label>通知時刻</label>
+          <input type="time" id="reminder-time" value="07:00" />
+        </div>
+        <div class="form-group">
+          <label>曜日を選択</label>
+          <div class="day-checkboxes">
+            <label><input type="checkbox" name="day" value="0" /> 日</label>
+            <label><input type="checkbox" name="day" value="1" /> 月</label>
+            <label><input type="checkbox" name="day" value="2" /> 火</label>
+            <label><input type="checkbox" name="day" value="3" /> 水</label>
+            <label><input type="checkbox" name="day" value="4" /> 木</label>
+            <label><input type="checkbox" name="day" value="5" /> 金</label>
+            <label><input type="checkbox" name="day" value="6" /> 土</label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>メッセージ</label>
+          <input type="text" id="reminder-message" value="今日も筋トレを頑張ろう！" maxlength="80" />
+        </div>
+        <div id="notification-permission-banner" class="banner banner-warn" style="display:none;">
+          ブラウザの通知許可が必要です。
+          <button class="btn-secondary" id="request-permission-btn">許可する</button>
+        </div>
+        <div id="reminder-status" class="banner banner-success" style="display:none;"></div>
+        <div class="form-actions">
+          <button class="btn-primary" id="save-reminder-btn">リマインダーを保存</button>
+          <button class="btn-danger" id="clear-reminder-btn">クリア</button>
+        </div>
+      </div>
+      <div class="card" style="margin-top:1rem;">
+        <h3>次回の通知予定</h3>
+        <p id="next-notification-time">設定されていません</p>
+      </div>
+    </section>
+  </main>
+
+  <!-- 目標モーダル -->
+  <div id="goal-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="goal-modal-title">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="goal-modal-title">目標を追加</h3>
+        <button class="modal-close" data-modal="goal-modal">&times;</button>
+      </div>
+      <form id="goal-form">
+        <input type="hidden" id="goal-id" />
+        <div class="form-group">
+          <label for="goal-name">種目名 <span class="required">*</span></label>
+          <input type="text" id="goal-name" placeholder="例: ベンチプレス" required maxlength="50" />
+        </div>
+        <div class="form-group">
+          <label for="goal-category">カテゴリ</label>
+          <select id="goal-category">
+            <option value="胸">胸</option>
+            <option value="背中">背中</option>
+            <option value="脚">脚</option>
+            <option value="肩">肩</option>
+            <option value="腕">腕</option>
+            <option value="体幹">体幹</option>
+            <option value="その他">その他</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="goal-weight">目標重量 (kg)</label>
+            <input type="number" id="goal-weight" min="0" step="0.5" placeholder="例: 100" />
+          </div>
+          <div class="form-group">
+            <label for="goal-reps">目標回数</label>
+            <input type="number" id="goal-reps" min="1" placeholder="例: 10" />
+          </div>
+          <div class="form-group">
+            <label for="goal-sets">目標セット数</label>
+            <input type="number" id="goal-sets" min="1" placeholder="例: 3" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="goal-deadline">目標期限</label>
+          <input type="date" id="goal-deadline" />
+        </div>
+        <div class="form-group">
+          <label for="goal-memo">メモ</label>
+          <textarea id="goal-memo" rows="2" maxlength="200" placeholder="自由記述"></textarea>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn-primary">保存</button>
+          <button type="button" class="btn-secondary" data-modal="goal-modal">キャンセル</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 記録モーダル -->
+  <div id="record-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="record-modal-title">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="record-modal-title">記録を追加</h3>
+        <button class="modal-close" data-modal="record-modal">&times;</button>
+      </div>
+      <form id="record-form">
+        <input type="hidden" id="record-id" />
+        <div class="form-group">
+          <label for="record-exercise">種目 <span class="required">*</span></label>
+          <select id="record-exercise" required>
+            <option value="">選択してください</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="record-date">日付 <span class="required">*</span></label>
+          <input type="date" id="record-date" required />
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="record-weight">重量 (kg)</label>
+            <input type="number" id="record-weight" min="0" step="0.5" placeholder="例: 80" />
+          </div>
+          <div class="form-group">
+            <label for="record-reps">回数 <span class="required">*</span></label>
+            <input type="number" id="record-reps" min="1" required placeholder="例: 10" />
+          </div>
+          <div class="form-group">
+            <label for="record-sets">セット数 <span class="required">*</span></label>
+            <input type="number" id="record-sets" min="1" required placeholder="例: 3" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="record-memo">メモ</label>
+          <input type="text" id="record-memo" maxlength="100" placeholder="体調など" />
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn-primary">保存</button>
+          <button type="button" class="btn-secondary" data-modal="record-modal">キャンセル</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="modal-overlay" class="modal-overlay"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
