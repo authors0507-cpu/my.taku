@@ -44,6 +44,11 @@ def load_api_key():
     return ""
 
 
+def save_api_key(key):
+    with open(CONFIG_FILE, "w", encoding="utf-8") as f:
+        json.dump({"api_key": key}, f, ensure_ascii=False)
+
+
 def calc(purchase, selling, referral_rate, fba_fee, shipping):
     referral_fee = selling * (referral_rate / 100)
     profit = selling - purchase - referral_fee - fba_fee - shipping
@@ -51,21 +56,28 @@ def calc(purchase, selling, referral_rate, fba_fee, shipping):
     return referral_fee, profit, profit_rate
 
 
+def calc_min_selling_price(purchase, referral_rate, fba_fee, shipping, min_profit_rate):
+    """最低利益率を確保できる最低販売価格を計算する"""
+    # profit = selling - purchase - selling*(rate/100) - fba - ship >= selling*(min_profit_rate/100)
+    # selling*(1 - rate/100 - min_profit_rate/100) >= purchase + fba + ship
+    denominator = 1 - (referral_rate / 100) - (min_profit_rate / 100)
+    if denominator <= 0:
+        return None
+    return (purchase + fba_fee + shipping) / denominator
+
+
 def extract_asin(text):
-    """URLまたは直接入力からASINを抽出する"""
     text = text.strip()
-    # URL から ASIN 抽出
     m = re.search(r"/(?:dp|gp/product)/([A-Z0-9]{10})", text)
     if m:
         return m.group(1)
-    # 直接 ASIN (10文字英数字)
     if re.fullmatch(r"[A-Z0-9]{10}", text):
         return text
     return None
 
 
 def fetch_keepa_price(api_key, asin):
-    """Keepa APIで現在のAmazon Japan価格を取得する。価格(円)またはNoneを返す"""
+    """Keepa APIで現在のAmazon Japan最安値（マーケットプレイス新品）を取得"""
     url = (
         "https://api.keepa.com/product"
         f"?key={urllib.parse.quote(api_key)}"
@@ -82,17 +94,16 @@ def fetch_keepa_price(api_key, asin):
     p = products[0]
     title = p.get("title", "")
 
-    # stats.current[0] = Amazon現在価格, [1] = マーケットプレイス新品最安値
     stats = p.get("stats", {})
     current = stats.get("current", [])
 
+    # index 1 = マーケットプレイス新品最安値, 0 = Amazon本体価格
     price = None
-    for idx in (0, 1):
+    for idx in (1, 0):
         if idx < len(current) and current[idx] and current[idx] > 0:
             price = current[idx]
             break
 
-    # Keepa の価格は JPY の場合も /100 が必要
     if price is not None:
         price = price / 100
 
@@ -102,9 +113,9 @@ def fetch_keepa_price(api_key, asin):
 class App:
     def __init__(self, root):
         self.root = root
-        self.root.title("せどり 利益計算ツール（Keepa連携）")
-        self.root.geometry("520x780")
-        self.root.resizable(False, False)
+        self.root.title("せどり 利益計算ツール（最安値監視機能付き）")
+        self.root.geometry("560x820")
+        self.root.resizable(False, True)
         self.root.configure(bg="#F4F6F8")
 
         self.api_key = load_api_key()
@@ -131,19 +142,33 @@ class App:
                  font=("Helvetica", 17, "bold"),
                  bg="#F4F6F8", fg="#2C3E50").pack(pady=(14, 2))
 
-        self._section_keepa()
-        self._section_platform()
-        self._section_input()
-        self._section_result()
-        self._section_buttons()
+        nb = ttk.Notebook(self.root)
+        nb.pack(fill="both", expand=True, padx=10, pady=6)
+
+        tab1 = tk.Frame(nb, bg="#F4F6F8")
+        tab2 = tk.Frame(nb, bg="#F4F6F8")
+        nb.add(tab1, text="  利益計算  ")
+        nb.add(tab2, text="  最安値監視  ")
+
+        self._build_calc_tab(tab1)
+        self._build_monitor_tab(tab2)
 
         if not EXCEL_AVAILABLE:
             tk.Label(self.root,
                      text="※ openpyxl 未インストール — pip install openpyxl で Excel保存が使えます",
                      font=("Helvetica", 8), bg="#F4F6F8", fg="#E74C3C").pack(pady=2)
 
-    def _section_keepa(self):
-        frm = tk.LabelFrame(self.root, text="Keepa 価格自動取得",
+    # ── 利益計算タブ ─────────────────────────────────────────────────────────
+
+    def _build_calc_tab(self, parent):
+        self._section_keepa(parent)
+        self._section_platform(parent)
+        self._section_input(parent)
+        self._section_result(parent)
+        self._section_buttons(parent)
+
+    def _section_keepa(self, parent):
+        frm = tk.LabelFrame(parent, text="Keepa 価格自動取得",
                             font=("Helvetica", 10), bg="#F4F6F8", padx=12, pady=8)
         frm.pack(fill="x", padx=20, pady=(6, 4))
         frm.columnconfigure(1, weight=1)
@@ -165,20 +190,18 @@ class App:
                                    padx=8, pady=2, cursor="hand2")
         self.fetch_btn.grid(row=0, column=1, padx=(6, 0))
 
-        # 商品名表示
         self.title_lbl = tk.Label(frm, textvariable=self.product_title,
                                   font=("Helvetica", 9), bg="#F4F6F8",
                                   fg="#555", wraplength=430, justify="left", anchor="w")
         self.title_lbl.grid(row=1, column=0, columnspan=2, sticky="w", pady=(2, 0))
 
-        # 取得状態メッセージ
         self.keepa_status = tk.StringVar(value="")
         tk.Label(frm, textvariable=self.keepa_status, font=("Helvetica", 9),
                  bg="#F4F6F8", fg="#888").grid(row=2, column=0, columnspan=2,
                                                sticky="w", pady=(0, 2))
 
-    def _section_platform(self):
-        frm = tk.LabelFrame(self.root, text="プラットフォーム",
+    def _section_platform(self, parent):
+        frm = tk.LabelFrame(parent, text="プラットフォーム",
                             font=("Helvetica", 10), bg="#F4F6F8", padx=12, pady=6)
         frm.pack(fill="x", padx=20, pady=4)
         for p in PLATFORM_DEFAULTS:
@@ -186,8 +209,8 @@ class App:
                            command=self._on_platform, font=("Helvetica", 11),
                            bg="#F4F6F8").pack(side="left", padx=8)
 
-    def _section_input(self):
-        frm = tk.LabelFrame(self.root, text="入力項目",
+    def _section_input(self, parent):
+        frm = tk.LabelFrame(parent, text="入力項目",
                             font=("Helvetica", 10), bg="#F4F6F8", padx=16, pady=8)
         frm.pack(fill="x", padx=20, pady=4)
         frm.columnconfigure(1, weight=1)
@@ -209,8 +232,8 @@ class App:
                      bg="#FFFFFF" if not muted else "#F0F0F0").grid(
                          row=i, column=1, sticky="e", pady=4, padx=(0, 4))
 
-    def _section_result(self):
-        frm = tk.LabelFrame(self.root, text="計算結果",
+    def _section_result(self, parent):
+        frm = tk.LabelFrame(parent, text="計算結果",
                             font=("Helvetica", 10), bg="#F4F6F8", padx=16, pady=8)
         frm.pack(fill="x", padx=20, pady=4)
         frm.columnconfigure(1, weight=1)
@@ -252,8 +275,8 @@ class App:
                                    font=("Helvetica", 16, "bold"), bg="#F4F6F8")
         self.status_lbl.grid(row=6, column=0, columnspan=2, pady=(6, 2))
 
-    def _section_buttons(self):
-        frm = tk.Frame(self.root, bg="#F4F6F8")
+    def _section_buttons(self, parent):
+        frm = tk.Frame(parent, bg="#F4F6F8")
         frm.pack(pady=12)
 
         tk.Button(frm, text="  Excelに保存  ", command=self._save,
@@ -266,7 +289,231 @@ class App:
                   bg="#95A5A6", fg="white", relief="flat",
                   padx=16, pady=8, cursor="hand2").pack(side="left", padx=8)
 
-    # ── Keepa 連携 ────────────────────────────────────────────────────────────
+    # ── 最安値監視タブ ────────────────────────────────────────────────────────
+
+    def _build_monitor_tab(self, parent):
+        # APIキー設定
+        api_frm = tk.LabelFrame(parent, text="Keepa APIキー設定",
+                                font=("Helvetica", 10), bg="#F4F6F8", padx=12, pady=8)
+        api_frm.pack(fill="x", padx=16, pady=(8, 4))
+        api_frm.columnconfigure(1, weight=1)
+
+        tk.Label(api_frm, text="APIキー", font=("Helvetica", 10),
+                 bg="#F4F6F8").grid(row=0, column=0, sticky="w")
+        self.mon_apikey_var = tk.StringVar(value=self.api_key)
+        tk.Entry(api_frm, textvariable=self.mon_apikey_var,
+                 font=("Helvetica", 10), show="*", width=30).grid(
+                     row=0, column=1, sticky="ew", padx=(6, 0))
+        tk.Button(api_frm, text="保存", command=self._save_api_key,
+                  font=("Helvetica", 9), bg="#7F8C8D", fg="white",
+                  relief="flat", padx=6, pady=2).grid(row=0, column=2, padx=(4, 0))
+
+        # 商品追加フォーム
+        add_frm = tk.LabelFrame(parent, text="監視商品を追加",
+                                font=("Helvetica", 10), bg="#F4F6F8", padx=12, pady=8)
+        add_frm.pack(fill="x", padx=16, pady=4)
+        add_frm.columnconfigure(1, weight=1)
+
+        fields = [
+            ("ASIN / URL",     "mon_asin"),
+            ("仕入れ値 (円)",   "mon_purchase"),
+            ("手数料率 (%)",    "mon_ref_rate"),
+            ("FBA配送料 (円)", "mon_fba"),
+            ("最低利益率 (%)", "mon_min_profit"),
+        ]
+        defaults = {"mon_ref_rate": "15.0", "mon_fba": "400", "mon_min_profit": "10.0"}
+        for i, (lbl, attr) in enumerate(fields):
+            tk.Label(add_frm, text=lbl, font=("Helvetica", 10),
+                     bg="#F4F6F8", anchor="w", width=16).grid(
+                         row=i, column=0, sticky="w", pady=3)
+            var = tk.StringVar(value=defaults.get(attr, ""))
+            setattr(self, attr + "_var", var)
+            tk.Entry(add_frm, textvariable=var, font=("Helvetica", 10),
+                     width=20, justify="right").grid(
+                         row=i, column=1, sticky="e", pady=3, padx=(0, 4))
+
+        tk.Button(add_frm, text="  リストに追加  ", command=self._add_monitor_item,
+                  font=("Helvetica", 10, "bold"),
+                  bg="#8E44AD", fg="white", relief="flat",
+                  padx=10, pady=4, cursor="hand2").grid(
+                      row=len(fields), column=0, columnspan=2, pady=(8, 2))
+
+        # 監視リスト
+        list_frm = tk.LabelFrame(parent, text="監視リスト",
+                                 font=("Helvetica", 10), bg="#F4F6F8", padx=8, pady=6)
+        list_frm.pack(fill="both", expand=True, padx=16, pady=4)
+
+        cols = ("ASIN", "仕入値", "現在最安値", "推奨価格", "利益率", "判定")
+        self.mon_tree = ttk.Treeview(list_frm, columns=cols, show="headings", height=6)
+        col_widths = [100, 70, 90, 90, 70, 80]
+        for col, w in zip(cols, col_widths):
+            self.mon_tree.heading(col, text=col)
+            self.mon_tree.column(col, width=w, anchor="center")
+
+        vsb = ttk.Scrollbar(list_frm, orient="vertical", command=self.mon_tree.yview)
+        self.mon_tree.configure(yscrollcommand=vsb.set)
+        self.mon_tree.pack(side="left", fill="both", expand=True)
+        vsb.pack(side="right", fill="y")
+
+        # タグで色付け
+        self.mon_tree.tag_configure("ok",      background="#D5F5E3", foreground="#1E8449")
+        self.mon_tree.tag_configure("warning", background="#FDEBD0", foreground="#A04000")
+        self.mon_tree.tag_configure("ng",      background="#FADBD8", foreground="#C0392B")
+        self.mon_tree.tag_configure("loading", foreground="#888888")
+
+        # ボタン行
+        btn_frm = tk.Frame(parent, bg="#F4F6F8")
+        btn_frm.pack(pady=6)
+
+        self.check_all_btn = tk.Button(
+            btn_frm, text="  全件 最安値チェック  ",
+            command=self._check_all,
+            font=("Helvetica", 11, "bold"),
+            bg="#E67E22", fg="white", relief="flat",
+            padx=14, pady=6, cursor="hand2")
+        self.check_all_btn.pack(side="left", padx=6)
+
+        tk.Button(btn_frm, text="選択削除", command=self._delete_selected,
+                  font=("Helvetica", 10),
+                  bg="#95A5A6", fg="white", relief="flat",
+                  padx=10, pady=6, cursor="hand2").pack(side="left", padx=6)
+
+        self.mon_status_var = tk.StringVar(value="")
+        tk.Label(parent, textvariable=self.mon_status_var,
+                 font=("Helvetica", 9), bg="#F4F6F8", fg="#555").pack(pady=(0, 4))
+
+        # 監視データ保持: {iid: {asin, purchase, ref_rate, fba, min_profit}}
+        self._monitor_items = {}
+
+    def _save_api_key(self):
+        key = self.mon_apikey_var.get().strip()
+        self.api_key = key
+        save_api_key(key)
+        self.mon_status_var.set("APIキーを保存しました")
+
+    def _add_monitor_item(self):
+        asin_raw = self.mon_asin_var.get().strip()
+        asin = extract_asin(asin_raw)
+        if not asin:
+            messagebox.showwarning("入力エラー",
+                "ASINまたはAmazonのURLを入力してください。\n例: B08XYZ1234")
+            return
+        try:
+            purchase   = float(self.mon_purchase_var.get())
+            ref_rate   = float(self.mon_ref_rate_var.get())
+            fba        = float(self.mon_fba_var.get())
+            min_profit = float(self.mon_min_profit_var.get())
+        except ValueError:
+            messagebox.showwarning("入力エラー", "数値を正しく入力してください。")
+            return
+
+        iid = self.mon_tree.insert(
+            "", "end",
+            values=(asin, f"¥{purchase:,.0f}", "—", "—", "—", "未確認"),
+            tags=("loading",))
+        self._monitor_items[iid] = {
+            "asin": asin, "purchase": purchase,
+            "ref_rate": ref_rate, "fba": fba, "min_profit": min_profit,
+        }
+        self.mon_asin_var.set("")
+        self.mon_purchase_var.set("")
+
+    def _delete_selected(self):
+        for iid in self.mon_tree.selection():
+            self.mon_tree.delete(iid)
+            self._monitor_items.pop(iid, None)
+
+    def _check_all(self):
+        if not self._monitor_items:
+            messagebox.showinfo("情報", "監視リストが空です。商品を追加してください。")
+            return
+        if not self.api_key:
+            messagebox.showerror("APIキーエラー",
+                "KeepaのAPIキーを入力して保存してください。")
+            return
+        self.check_all_btn.config(state="disabled", text="確認中...")
+        self.mon_status_var.set("Keepaに問い合わせ中...")
+
+        items = dict(self._monitor_items)
+
+        def worker():
+            results = {}
+            for iid, info in items.items():
+                try:
+                    price, title = fetch_keepa_price(self.api_key, info["asin"])
+                    results[iid] = {"price": price, "title": title, "error": None}
+                except Exception as e:
+                    results[iid] = {"price": None, "title": None, "error": str(e)}
+            self.root.after(0, self._on_check_done, results)
+
+        threading.Thread(target=worker, daemon=True).start()
+
+    def _on_check_done(self, results):
+        self.check_all_btn.config(state="normal", text="  全件 最安値チェック  ")
+        updated = 0
+        for iid, res in results.items():
+            info = self._monitor_items.get(iid)
+            if info is None:
+                continue
+
+            purchase   = info["purchase"]
+            ref_rate   = info["ref_rate"]
+            fba        = info["fba"]
+            min_profit = info["min_profit"]
+
+            if res["error"]:
+                self.mon_tree.item(iid, values=(
+                    info["asin"], f"¥{purchase:,.0f}",
+                    "エラー", "—", "—", res["error"][:15]), tags=("ng",))
+                continue
+
+            market_price = res["price"]
+            if market_price is None:
+                self.mon_tree.item(iid, values=(
+                    info["asin"], f"¥{purchase:,.0f}",
+                    "在庫なし", "—", "—", "確認不可"), tags=("warning",))
+                continue
+
+            # 最低販売価格（利益確保ライン）
+            min_selling = calc_min_selling_price(purchase, ref_rate, fba, 0, min_profit)
+            if min_selling is None:
+                tag, verdict = "ng", "設定エラー"
+                rec_price_str = "—"
+                rate_str = "—"
+            else:
+                # 推奨価格 = 競合最安値-1円 or 最低価格の高い方
+                rec_price = max(market_price - 1, min_selling)
+                rec_price = round(rec_price)
+
+                _, profit, profit_rate = calc(purchase, rec_price, ref_rate, fba, 0)
+
+                rec_price_str = f"¥{rec_price:,}"
+                rate_str = f"{profit_rate:.1f}%"
+
+                if rec_price <= market_price - 1:
+                    tag = "ok"
+                    verdict = "値下げ可"
+                elif rec_price == market_price:
+                    tag = "ok"
+                    verdict = "同価格"
+                else:
+                    tag = "warning"
+                    verdict = f"最低¥{min_selling:,.0f}"
+
+            self.mon_tree.item(iid, values=(
+                info["asin"],
+                f"¥{purchase:,.0f}",
+                f"¥{market_price:,.0f}",
+                rec_price_str,
+                rate_str,
+                verdict,
+            ), tags=(tag,))
+            updated += 1
+
+        now = datetime.datetime.now().strftime("%H:%M:%S")
+        self.mon_status_var.set(f"最終確認: {now}  ({updated}件更新)")
+
+    # ── Keepa 連携（利益計算タブ用） ──────────────────────────────────────────
 
     def _fetch_price(self):
         if not self.api_key:
