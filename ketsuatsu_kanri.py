@@ -396,7 +396,7 @@ class BPApp(tk.Tk):
 
         canvas.create_line(pad_l, pad_t, pad_l, h - pad_b, fill="#999999")
         canvas.create_line(pad_l, h - pad_b, w - pad_r, h - pad_b, fill="#999999")
-        for v in (100, 135, 140, 160):
+        for v in (100, 135, 160):
             y = y_of(v)
             canvas.create_line(pad_l, y, w - pad_r, y, fill="#dddddd", dash=(2, 2))
             canvas.create_text(pad_l - 8, y, text=str(v), anchor="e", font=("", 8))
