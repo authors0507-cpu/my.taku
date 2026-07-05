@@ -3,3 +3,4 @@ __pycache__/
 *.pyo
 *.xlsx
 keepa_config.json
+血圧記録.json
