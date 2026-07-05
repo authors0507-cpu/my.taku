@@ -1,0 +1,15 @@
+{
+  "name": "血圧健康管理",
+  "short_name": "血圧管理",
+  "description": "日々の血圧を記録し、食事・生活アドバイスを受けられる健康管理アプリ",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f4f6fb",
+  "theme_color": "#2563eb",
+  "lang": "ja",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }
+  ]
+}

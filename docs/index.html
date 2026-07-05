@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>血圧健康管理</title>
+<meta name="description" content="日々の血圧を記録し、食事・生活アドバイスを受けられる健康管理アプリ">
+<meta name="theme-color" content="#2563eb">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="血圧管理">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="app-header">
+  <h1>血圧健康管理</h1>
+</header>
+
+<main>
+  <section class="card" id="input-card">
+    <h2>今日の記録</h2>
+    <form id="record-form">
+      <div class="field-row">
+        <label>
+          日付
+          <input type="date" id="f-date" required>
+        </label>
+        <label>
+          時間帯
+          <select id="f-slot">
+            <option>朝</option>
+            <option>日中</option>
+            <option>夜</option>
+          </select>
+        </label>
+      </div>
+      <div class="field-row">
+        <label>
+          収縮期(上)
+          <input type="number" id="f-sbp" inputmode="numeric" min="50" max="300" required>
+        </label>
+        <label>
+          拡張期(下)
+          <input type="number" id="f-dbp" inputmode="numeric" min="30" max="200" required>
+        </label>
+        <label>
+          脈拍
+          <input type="number" id="f-pulse" inputmode="numeric" min="20" max="250">
+        </label>
+      </div>
+      <label class="field-full">
+        メモ
+        <input type="text" id="f-memo" placeholder="任意">
+      </label>
+      <button type="submit" class="btn primary">記録する</button>
+    </form>
+  </section>
+
+  <section class="card" id="judgement-card">
+    <h2>判定とアドバイス</h2>
+    <div id="judgement" class="judgement">まだ記録がありません</div>
+    <pre id="advice" class="advice"></pre>
+    <button id="btn-refresh-advice" class="btn">アドバイスを更新</button>
+  </section>
+
+  <section class="card">
+    <h2>血圧の推移（直近14件）</h2>
+    <canvas id="chart" width="320" height="220"></canvas>
+    <p id="weekly-stats" class="stats"></p>
+  </section>
+
+  <section class="card">
+    <h2>記録履歴</h2>
+    <div id="history-list" class="history-list"></div>
+    <div class="field-row">
+      <button id="btn-export" class="btn">エクスポート(JSON)</button>
+      <button id="btn-export-csv" class="btn">エクスポート(CSV)</button>
+      <label class="btn file-btn">
+        インポート
+        <input type="file" id="btn-import" accept="application/json" hidden>
+      </label>
+    </div>
+  </section>
+
+  <p class="disclaimer">
+    ※ 表示される判定は家庭血圧の目安を簡略化した参考情報であり、医療的な診断ではありません。
+    高い数値が続く場合は医師にご相談ください。
+  </p>
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>
